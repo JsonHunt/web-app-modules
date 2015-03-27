@@ -1,0 +1,51 @@
+form.form.login(ng-show="!resetting")
+	div.form-group
+		input#username.form-control(
+			type='text'
+			ng-model="username"
+			placeholder="Username"
+		)
+		
+	div.form-group
+		input.form-control(
+			type='password'
+			ng-model="password"
+			placeholder="Password"
+		)
+	
+	div.buttons
+		button.btn.btn-primary(
+			ng-click="login()"
+		) Login
+		button.btn.btn-default(
+			ng-click="passwordReset()"
+		) I forgot my password
+	
+	div(ng-if="error").error {{error}}
+	
+div.passreset(ng-show="resetting")
+	div(ng-show="!sent")
+		div.title We will send you a password-reset link 
+
+		form.form
+			div.form-group
+				input.focusme.form-control(
+					type='text'
+					ng-model="email"
+					placeholder= "Email"
+				)
+			div.buttons
+				button.btn.btn-warning(
+					ng-click="resetContinue()"
+				) Continue
+				button.btn.btn-default(
+					ng-click="resetCancel()"
+				) Cancel
+				
+	div(ng-if="sent")
+		div Email sent
+		button.btn.btn-success(
+			ng-click="cancelReset()"
+		) OK
+
+	div.error(ng-if="error") {{error}}
