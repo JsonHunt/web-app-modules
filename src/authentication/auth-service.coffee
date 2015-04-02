@@ -3,10 +3,10 @@ FastBricks = require 'fast-bricks'
 emailjs   = require "emailjs/email"
 uuid = require 'node-uuid'
 
-fb = new FastBricks()
-fb.loadConfig 'database-config.cson'
-
-class PublicService
+class AuthService
+	constructor: (dbconfigFile)->
+		@fb = new FastBricks()
+		@fb.loadConfig dbconfigFile
 
 	server: emailjs.server.connect
 		user:    "lukasz.korzeniowski@gmail.com",
@@ -31,12 +31,12 @@ class PublicService
 		username = {username:user.username}
 		email = {email:user.email}
 
-		fb.query sql.select().from('`user`').where(username), (err,result)=>
+		@fb.query sql.select().from('`user`').where(username), (err,result)=>
 			if result.length > 0
 				callback "This user name is not available"
 				return
 
-			fb.query sql.select().from('`user`').where(email), (err,result)=>
+			@fb.query sql.select().from('`user`').where(email), (err,result)=>
 				if result.length > 0
 					callback "This email is not available"
 					return
@@ -53,7 +53,7 @@ class PublicService
 						console.log err
 						callback "There was a problem with the activation email"
 					else
-						fb.query sql.insert('`user`',newuser), (err,result)=>
+						@fb.query sql.insert('`user`',newuser), (err,result)=>
 							newuser.id = result.insertId
 							delete newuser.password
 							callback undefined, newuser
@@ -64,12 +64,14 @@ class PublicService
 			username: username
 			password: password
 		)
-		fb.query expr, (err,result)->
-			if result.length is 0
+		@fb.query expr, (err,result)->
+			if err
+				callback err
+			if result and result.length is 0
 				callback "This username/password is not valid"
 			else
 				user = result[0]
-				if user.validation is 0
+				if user and user.validation is 0
 					callback "This account hasn't been verified yet. Check your email"
 				else
 					callback undefined, user
@@ -86,7 +88,7 @@ class PublicService
 					'`subject`': msg.subject
 					'`status`' : "sent"
 					'`time_sent`' : new Date()
-				fb.query sql.insert('email', email), (err,result)->
+				@fb.query sql.insert('email', email), (err,result)->
 					if err
 						callback err
 					else
@@ -101,19 +103,19 @@ class PublicService
 		@sendEmail msg, callback
 
 	activateUser: (activationCode, callback)->
-		fb.query sql.select().from('`user`').where({activation_code:activationCode}), (err,results)->
+		@fb.query sql.select().from('`user`').where({activation_code:activationCode}), (err,results)->
 			if results.length is 0
 				callback "Error: invalid activation code"
 			else
 				user = results[0]
-				fb.query sql.update('`user`',{verification:1}).where(id:user.id), (err,result)->
+				@fb.query sql.update('`user`',{verification:1}).where(id:user.id), (err,result)->
 					callback()
 
 	requestPasswordReset: (email, callback)->
 		if !email or email.length is 0
 			callback "Please enter your email"
 
-		fb.query sql.select().from('`user`').where({email:email}), (err,results)=>
+		@fb.query sql.select().from('`user`').where({email:email}), (err,results)=>
 			if results.length is 0
 				callback "We do not have an account associated with this email"
 			else
@@ -128,14 +130,14 @@ class PublicService
 					if err
 						callback err
 					else
-						fb.query sql.update('`user`',{password_code:passcode}).where(id:user.id), (err,result)=>
+						@fb.query sql.update('`user`',{password_code:passcode}).where(id:user.id), (err,result)=>
 							if err
 								callback err
 							else
 								callback()
 
 	resetPassword: (code,callback)->
-		fb.query sql.select().from('`user`').where(password_code:code), (err,results)->
+		@fb.query sql.select().from('`user`').where(password_code:code), (err,results)->
 			if err
 				callback err
 			else if results.length is 0
@@ -149,7 +151,7 @@ class PublicService
 		if !password
 			callback "Password is required"
 
-		fb.query sql.update('`user`',{password:password}).where(id:user.id), (err,result)->
+		@fb.query sql.update('`user`',{password:password}).where(id:user.id), (err,result)->
 			callback err
 
-module.exports = new PublicService()
+module.exports = AuthService

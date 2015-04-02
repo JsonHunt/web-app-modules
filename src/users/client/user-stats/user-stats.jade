@@ -1,0 +1,27 @@
+div.user-stats
+	div.header User stats
+	form
+		div
+			.label Total Users:
+			.value {{stats.total}}
+		div
+			.label Verified emails: 
+			.value {{stats.verified}}
+		div 
+			.label Suspended:
+			.value {{stats.suspended}}
+		div
+			.label Paying users:
+			.value {{stats.paying}}
+		div
+			.label Total balance:
+			.value {{stats.balance}}
+		div
+			.label Users registered within 7 days:
+			.value {{stats.registered_7_days}}
+		div
+			.label Payments within 7 days:
+			.value {{stats.payments_7_days}}
+
+div.error(ng-show="error") {{error}}
+			

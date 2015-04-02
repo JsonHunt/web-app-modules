@@ -1,0 +1,61 @@
+
+<div class="user-list">
+  <div class="search">
+    <div class="form-group">
+      <input type="text" ng-model="search" placeholder="Search..." class="form-control"/>
+      <button ng-click="search()" class="btn btn-primary">Search</button>
+    </div>
+  </div>
+  <div class="users">
+    <table>
+      <tr>
+        <th>Login</th>
+        <th>Registration Date</th>
+        <th>Balance</th>
+        <th>Status</th>
+      </tr>
+      <tr ng-repeat="user in users track by user.login">
+        <td>{{user.username}}</td>
+        <td>{{user.date_registered}}</td>
+        <td>{{user.balance}}</td>
+        <td>{{user.status}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div ng-show="user" class="user-details"> 
+  <div>
+    <div class="label">Login</div>
+    <div class="value">{{user.username}}</div>
+  </div>
+  <div>
+    <div class="label">Email</div>
+    <div class="value">{{user.email}}</div>
+  </div>
+  <div>
+    <div class="label">Balance</div>
+    <div class="value">{{user.balance}}</div>
+  </div>
+  <div>
+    <div class="label">Status</div>
+    <div class="value">{{user.suspended ? "Suspended":"Active"}}</div>
+  </div>
+  <div>
+    <div class="label">Registration Date</div>
+    <div class="value">{{user.date_registered}}</div>
+  </div>
+  <div>Payment history
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Description</th>
+      </tr>
+      <tr ng-repeat="p in user.payments track by p.date">
+        <td>{{p.time_paid}}</td>
+        <td>{{p.amount}}</td>
+        <td>{{p.description}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

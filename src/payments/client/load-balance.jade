@@ -4,11 +4,11 @@ form.form-inline(ng-show="!confirmed")
 	div.form-group
 		input.amount.form-control(
 			type='text'
-			ng-model="amount"
+			ng-model="$parent.$parent.amount"
 			placeholder= "Amount $US"
 		)
 	button.btn.btn-primary(
-		ng-click="pay()"
+		ng-click="doPay()"
 	) Continue
 	button.btn.btn-default(
 		ng-click="cancel()"

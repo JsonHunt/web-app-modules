@@ -5,7 +5,7 @@ module.exports = SignupController = ($scope,$ocModal,$http) ->
 	,100
 
 	$scope.signup = ()->
-		$http.post "/rest/signup",
+		$http.post "signup",
 			user: $scope.user
 		.error (data,status,headers,config)-> $scope.error = data
 		.success (data,status,headers,config)->

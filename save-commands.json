@@ -1,5 +1,5 @@
 {
-	"timeout": 4000,
+	"timeout": 2000,
 	"commands": [
 		"src/**/*.coffee : coffee -c -o gen{relPathNoRoot} {relFullPath}",
 		"src/**/*.jade   : jade -P {relPath}{filename} -o gen{relPathNoRoot}",

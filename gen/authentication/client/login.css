@@ -1,0 +1,7 @@
+.form.login .buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.form.login .buttons button {
+  min-width: 200px;
+}

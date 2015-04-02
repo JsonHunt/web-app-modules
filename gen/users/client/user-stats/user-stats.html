@@ -1,0 +1,35 @@
+
+<div class="user-stats">
+  <div class="header">User stats</div>
+  <form>
+    <div>
+      <div class="label">Total Users:</div>
+      <div class="value">{{stats.total}}</div>
+    </div>
+    <div>
+      <div class="label">Verified emails: </div>
+      <div class="value">{{stats.verified}}</div>
+    </div>
+    <div> 
+      <div class="label">Suspended:</div>
+      <div class="value">{{stats.suspended}}</div>
+    </div>
+    <div>
+      <div class="label">Paying users:</div>
+      <div class="value">{{stats.paying}}</div>
+    </div>
+    <div>
+      <div class="label">Total balance:</div>
+      <div class="value">{{stats.balance}}</div>
+    </div>
+    <div>
+      <div class="label">Users registered within 7 days:</div>
+      <div class="value">{{stats.registered_7_days}}</div>
+    </div>
+    <div>
+      <div class="label">Payments within 7 days:</div>
+      <div class="value">{{stats.payments_7_days}}</div>
+    </div>
+  </form>
+</div>
+<div ng-show="error" class="error">{{error}}</div>

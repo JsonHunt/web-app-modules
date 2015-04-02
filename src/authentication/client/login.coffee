@@ -1,14 +1,14 @@
-module.exports = LoginController = ($scope,$ocModal,$http,$modalInstance, $injector) ->
+module.exports = LoginController = ($scope,$http,$modalInstance,$rootScope) ->
 
 	setTimeout ()->
 		$('#username').focus()
 	,100
 
 	$scope.login = ()->
-		$http = $injector.invoke(($http) ->
-			$http
-		)
-		$http.post 'rest/login',
+		# $http = $injector.invoke(($http) ->
+		# 	$http
+		# )
+		$http.post 'module/auth/login',
 			username: @username
 			password: @password
 		.error (data,status,headers,config)-> $scope.error = data
@@ -16,6 +16,7 @@ module.exports = LoginController = ($scope,$ocModal,$http,$modalInstance, $injec
 			if data.error
 				$scope.error = data.error
 			else
+				$rootScope.user = data.user
 				$modalInstance.close data.user
 
 	$scope.passwordReset = ()->
@@ -34,7 +35,7 @@ module.exports = LoginController = ($scope,$ocModal,$http,$modalInstance, $injec
 			$scope.error = "Email is required"
 			return
 
-		$http.post "/rest/requestPasswordReset",
+		$http.post "module/auth/requestPasswordReset",
 			email: $scope.email
 		.success (data,status,headers,config)->
 			$scope.error = data.error
@@ -52,4 +53,4 @@ module.exports = LoginController = ($scope,$ocModal,$http,$modalInstance, $injec
 			$('#username').focus()
 		,100
 
-LoginController.$inject = [ '$scope','$ocModal','$http','$modalInstance','$injector' ]
+LoginController.$inject = [ '$scope','$http','$modalInstance','$rootScope' ]

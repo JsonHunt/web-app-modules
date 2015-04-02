@@ -9,7 +9,7 @@ module.exports = ChangePasswordController = ($scope, $http, $location) ->
 			$scope.error = "Passwords don't match"
 			return
 
-		$http.post "/rest/changePassword",
+		$http.post "changePassword",
 			password: $scope.newpass
 		.error (data,status,headers,config)-> $scope.error = data
 		.success (data,status,headers,config)->

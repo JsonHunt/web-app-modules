@@ -1,15 +1,15 @@
-module.exports = PaymentController = ($scope, $http, $modalInstance) ->
+module.exports = LoadBalanceController = ($scope, $http, $modalInstance) ->
 
 	setTimeout ()->
 		$('.amount').focus()
 	,100
 
-	$scope.pay = ()->
-		if not $scope.payment?.amount or $scope.payment?.amount.length is 0
+	$scope.doPay = ()->
+		if not $scope.amount or $scope.amount.length is 0
 			$scope.error = "Amount is required"
 			return
 
-		if isNaN($scope.payment.amount)
+		if isNaN($scope.amount)
 			$scope.error = "Amount must be a number"
 			return
 
@@ -18,7 +18,7 @@ module.exports = PaymentController = ($scope, $http, $modalInstance) ->
 			key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh'
 			image: '/img/documentation/checkout/marketplace.png'
 			token: (token)->
-				$http.post "/rest/payment",
+				$http.post "module/payment/loadBalance",
 					token: token
 				.success (data,status,headers,config)->
 					$scope.error = data.error
@@ -33,7 +33,7 @@ module.exports = PaymentController = ($scope, $http, $modalInstance) ->
 		handler.open
 			name: 'Webapp',
 			description: 'Webapp subscription',
-			amount: $scope.payment.amount*100
+			amount: $scope.amount
 
 	$scope.cancel = ()->
 		$modalInstance.close()
@@ -41,4 +41,4 @@ module.exports = PaymentController = ($scope, $http, $modalInstance) ->
 	$scope.close = ()->
 		$modalInstance.close()
 
-PaymentController.$inject = [ '$scope', '$http', '$modalInstance' ]
+LoadBalanceController.$inject = [ '$scope', '$http', '$modalInstance' ]

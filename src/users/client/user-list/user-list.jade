@@ -1,0 +1,53 @@
+div.user-list
+	div.search
+		div.form-group
+			input.form-control(
+				type='text'
+				ng-model="search"
+				placeholder="Search..."
+			)
+			button.btn.btn-primary(
+				ng-click="search()"
+			) Search
+	
+	div.users
+		table
+			tr
+				th Login
+				th Registration Date
+				th Balance
+				th Status
+			tr(ng-repeat="user in users track by user.login")
+				td {{user.username}}
+				td {{user.date_registered}}
+				td {{user.balance}}
+				td {{user.status}}
+
+div.user-details(ng-show="user")  
+	div
+		.label Login
+		.value {{user.username}}
+	div
+		.label Email
+		.value {{user.email}}
+	div
+		.label Balance
+		.value {{user.balance}}
+	div
+		.label Status
+		.value {{user.suspended ? "Suspended":"Active"}}
+	div
+		.label Registration Date
+		.value {{user.date_registered}}
+		
+	div Payment history
+		table
+			tr
+				th Date
+				th Amount
+				th Description
+			tr(ng-repeat="p in user.payments track by p.date")
+				td {{p.time_paid}}
+				td {{p.amount}}
+				td {{p.description}}
+	
